@@ -18,8 +18,6 @@ import java.util.List;
 public class PasosLogin {
 
     static WebDriver driver;
-    static String pathDriver = "./src/test/resources/chrome/chromedriver.exe";
-    static String driverType = "webdriver.chrome.driver";
     static WebDriverWait wait;
 
     @Before
@@ -115,6 +113,20 @@ public class PasosLogin {
             System.out.println("Todos los mensajes de error fueron encontrados. Prueba PASADA.");
         } else {
             System.out.println("Algunos mensajes de error no fueron encontrados. Prueba FALLIDA.");
+        }
+    }
+
+    @Then("is redirected to login")
+    public void isRedirectedToLogin() {
+        try {
+            boolean redirected = wait.until(ExpectedConditions.urlToBe("https://taskhub.cl/login"));
+            if (redirected) {
+                System.out.println("Redireccion exitosa. Prueba PASADA.");
+            } else {
+                System.out.println("No redirigido al login. Prueba FALLIDA.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error. Prueba FALLIDA.");
         }
     }
 }

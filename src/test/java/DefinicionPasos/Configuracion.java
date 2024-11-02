@@ -6,7 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Configuracion {
 
     static WebDriver driver;
-    static String pathDriver = "./src/test/resources/chrome/chromedriver.exe";
+    static String pathDriver = "/opt/homebrew/bin/chromedriver";
     static String driverType = "webdriver.chrome.driver";
 
     public static WebDriver configure() throws Exception {

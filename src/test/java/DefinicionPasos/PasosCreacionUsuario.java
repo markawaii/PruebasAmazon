@@ -19,13 +19,10 @@ import io.cucumber.java.en.When;
 public class PasosCreacionUsuario {
 
 	static WebDriver driver;
-    static String pathDriver = "./src/test/resources/chrome/chromedriver.exe";
-    static String driverType = "webdriver.chrome.driver";
     static WebDriverWait wait;
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty(driverType, pathDriver);
         driver = Configuracion.configure();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
@@ -88,14 +85,7 @@ public class PasosCreacionUsuario {
         }
 	}
 
-    @And("I hit the user button with selector {string}")
-    public void iHitTheUserButtonWithSelector(String arg0) {
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(arg0)));
-        System.out.println("Haciendo clic en el botón de usuario");
-        loginButton.click();
-    }
-
-    @And("I hit the user-actions button with selector {string}")
+    @And("I hit the user-view button with selector {string}")
     public void iHitTheUserActionsButtonWithSelector(String arg0) {
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(arg0)));
         System.out.println("Haciendo clic en el botón de acciones de usuario");
@@ -104,13 +94,9 @@ public class PasosCreacionUsuario {
 
     @Then("I should search for a Client redirected to url {string}")
     public void iShouldSearchForAClientRedirectedToUrl(String arg0) {
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(arg0)));
-        System.out.println("Haciendo clic en el botón de Guardar");
-        loginButton.click();
-
         // Esperar hasta que la URL cambie o aparezca un elemento único del dashboard
         try {
-            boolean redirected = wait.until(ExpectedConditions.urlContains("/cliente/show/1"));
+            boolean redirected = wait.until(ExpectedConditions.urlContains(arg0));
             if (redirected) {
                 System.out.println("Redireccionado correctamente. Prueba PASADA.");
             } else {
@@ -121,4 +107,8 @@ public class PasosCreacionUsuario {
         }
     }
 
+    @And("I click on the button with text {string}")
+    public void iClickOnTheButtonWithText(String arg0) {
+
+    }
 }

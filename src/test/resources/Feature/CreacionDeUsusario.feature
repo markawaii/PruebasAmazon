@@ -18,6 +18,5 @@ Feature: New User creation
     And I enter in the password field with id "password" the text "123123123"
     And I click on the Login button with id "login_button"
     And I navigate to the url "https://taskhub.cl/cliente"
-    And I hit the user button with selector "#tablaClientes > tbody > tr.odd.dt-hasChild.parent > td.dtr-control.sorting_1"
-    And I hit the user-actions button with selector "#tablaClientes > tbody > tr.child > td > ul > li > span.dtr-data > a.btn.btn-success.fa-solid.fa-eye"
-    Then I should search for a Client redirected to url "https://taskhub.cl/"
+    And I hit the user-view button with selector "#tablaClientes > tbody > tr:nth-child(1) > td:nth-child(7) > a.btn.btn-success.fa-solid.fa-eye"
+    Then I should search for a Client redirected to url "https://taskhub.cl/cliente/show/1"
