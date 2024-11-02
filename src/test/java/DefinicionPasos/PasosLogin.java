@@ -1,32 +1,28 @@
 package DefinicionPasos;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
-import java.util.List;
-
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
 
 public class PasosLogin {
 
     static WebDriver driver;
-    static String pathDriver = "./src/test/resources/chrome/chromedriver.exe";
-    static String driverType = "webdriver.chrome.driver";
     static WebDriverWait wait;
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty(driverType, pathDriver);
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().deleteAllCookies();
+        driver = Configuracion.configure();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
@@ -117,6 +113,20 @@ public class PasosLogin {
             System.out.println("Todos los mensajes de error fueron encontrados. Prueba PASADA.");
         } else {
             System.out.println("Algunos mensajes de error no fueron encontrados. Prueba FALLIDA.");
+        }
+    }
+
+    @Then("is redirected to login")
+    public void isRedirectedToLogin() {
+        try {
+            boolean redirected = wait.until(ExpectedConditions.urlToBe("https://taskhub.cl/login"));
+            if (redirected) {
+                System.out.println("Redireccion exitosa. Prueba PASADA.");
+            } else {
+                System.out.println("No redirigido al login. Prueba FALLIDA.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error. Prueba FALLIDA.");
         }
     }
 }
