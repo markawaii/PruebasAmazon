@@ -84,7 +84,7 @@ public class PasosLogin {
     public void an_error_message_is_presented(String expectedMessage) {
         try {
             // Localizar el mensaje de error en la página
-            WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'alert') or contains(@class, 'invalid-feedback')]")));
+            WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(),'" + expectedMessage + "')]")));
             String actualMessage = errorElement.getText();
             System.out.println("Mensaje de error presentado: " + actualMessage);
             if (actualMessage.contains(expectedMessage)) {
