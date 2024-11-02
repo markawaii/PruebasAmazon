@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
@@ -32,8 +33,11 @@ public class PasosLogin {
 
     @After
     public void tearDown() throws Exception {
-        if (driver != null)
+        if (driver != null) {
+            // Espera de 5 segundos para observar el resultado de la prueba
+            TimeUnit.SECONDS.sleep(5);
             driver.quit();
+        }
     }
 
     @Given("I navigate to the url {string}")
@@ -65,25 +69,37 @@ public class PasosLogin {
         loginButton.click();
     }
 
-    @Then("I should be redirected to the dashboard")
-    public void i_should_be_redirected_to_the_dashboard() {
-        // Esperar hasta que la URL cambie o aparezca un elemento único del dashboard
+    @Then("I should be redirected to the url {string}")
+    public void i_should_be_redirected_to_the_url(String expectedUrl) {
         try {
-            boolean redirected = wait.until(ExpectedConditions.urlContains("/dashboard"));
+            boolean redirected = wait.until(ExpectedConditions.urlToBe(expectedUrl));
             if (redirected) {
-                System.out.println("Inicio de sesión exitoso. Prueba PASADA.");
+                System.out.println("Redirigido exitosamente a: " + expectedUrl + ". Prueba PASADA.");
             } else {
-                System.out.println("No redirigido al dashboard. Prueba FALLIDA.");
+                System.out.println("No redirigido a la URL esperada. Prueba FALLIDA.");
             }
         } catch (Exception e) {
-            System.out.println("Error al verificar la redirección al dashboard. Prueba FALLIDA.");
+            System.out.println("Error al verificar la redirección a la URL esperada. Prueba FALLIDA.");
+        }
+    }
+
+    @Then("I should remain on the url {string}")
+    public void i_should_remain_on_the_url(String expectedUrl) {
+        try {
+            boolean onSameUrl = wait.until(ExpectedConditions.urlToBe(expectedUrl));
+            if (onSameUrl) {
+                System.out.println("Permaneció en la URL: " + expectedUrl + ". Prueba PASADA.");
+            } else {
+                System.out.println("No se mantuvo en la URL esperada. Prueba FALLIDA.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al verificar la permanencia en la URL esperada. Prueba FALLIDA.");
         }
     }
 
     @Then("an error message is presented {string}")
     public void an_error_message_is_presented(String expectedMessage) {
         try {
-            // Localizar el mensaje de error en la página
             WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(),'" + expectedMessage + "')]")));
             String actualMessage = errorElement.getText();
             System.out.println("Mensaje de error presentado: " + actualMessage);
