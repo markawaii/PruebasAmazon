@@ -21,10 +21,24 @@ Feature: User Login
     And I click on the Login button with id "login_button"
     Then an error message is presented "The email field is required."
 
-	Scenario: Failed login with both fields empty
-	    Given I navigate to the url "https://taskhub.cl/"
-	    When I enter in the username field with id "email" the text ""
-	    And I enter in the password field with id "password" the text ""
-	    And I click on the Login button with id "login_button"
-	    Then an error message is presented "The email field is required."
-	    And an error message is presented "The password field is required."
+  Scenario: Failed login with both fields empty
+    Given I navigate to the url "https://taskhub.cl/"
+    When I enter in the username field with id "email" the text ""
+    And I enter in the password field with id "password" the text ""
+    And I click on the Login button with id "login_button"
+    Then an error message is presented "The email field is required."
+    And an error message is presented "The password field is required."
+
+  Scenario: Failed login with empty password
+    Given I navigate to the url "https://taskhub.cl/"
+    When I enter in the username field with id "email" the text "asdf@asdf.cl"
+    And I enter in the password field with id "password" the text "asdf"
+    And I click on the Login button with id "login_button"
+    Then is redirected to login
+
+  Scenario: Failed login with SQL injection
+    Given I navigate to the url "https://taskhub.cl/"
+    When I enter in the username field with id "email" the text " OR 1=1"
+    And I enter in the password field with id "password" the text " OR 1=1"
+    And I click on the Login button with id "login_button"
+    Then is redirected to login
